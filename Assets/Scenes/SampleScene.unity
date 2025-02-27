@@ -412,7 +412,7 @@ Transform:
   m_GameObject: {fileID: 70475278}
   serializedVersion: 2
   m_LocalRotation: {x: 4.547473e-13, y: 0.000000051773238, z: 0.000012279266, w: 1}
-  m_LocalPosition: {x: -0.0000131577435, y: 0.041917067, z: 0.19121265}
+  m_LocalPosition: {x: -0.000013157749, y: 0.041917305, z: 0.19121265}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6136,7 +6136,7 @@ PrefabInstance:
       addedObject: {fileID: 725841589}
     - targetCorrespondingSourceObject: {fileID: 400050, guid: f046b455d7b54e84db42d0171694e5e2,
         type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 70475279}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100152, guid: f046b455d7b54e84db42d0171694e5e2,
@@ -6192,7 +6192,7 @@ MonoBehaviour:
   crouchHeight: 1
   crouchSpeed: 3
   defaultFOV: 60
-  walkFOV: 61
+  walkFOV: 63
   runFOV: 66
   fovLerpSpeed: 5
   speed: 5

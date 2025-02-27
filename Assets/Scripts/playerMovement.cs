@@ -6,8 +6,9 @@ using System;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+
     public Camera playerCamera;
-    public Animator animator;  // Cambiado de Animation a Animator
+    public Animator animator;
     public float walkSpeed = 3f;
     public float runSpeed = 3f;
     public float jumpPower = 7f;
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canMove = true;
     private bool IsSitting = false;
+
     void Start()
     {
         animator = GetComponent<Animator>(); // Cambiado a Animator
@@ -121,17 +123,18 @@ public class PlayerMovement : MonoBehaviour
              {           
                  IsSitting = true;
                  sitChair();
-             }
-        } 
+             } 
+    }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            animator.SetBool("IsSitting", false);
+            canMove = true;
+        }
     }
     void sitChair()
     {
          animator.SetBool("IsSitting", true);
          canMove = false;
-    }
-    void standUp()
-    {
-
     }
 
 
