@@ -63,8 +63,8 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
 
-        float moveInput = Input.GetAxis("Vertical"); // Use "W" or "S" (or arrow keys) for movement
-        bool isWalking = Mathf.Abs(moveInput) > 0.1f; // Detect movement
+        float moveInput = Input.GetAxis("Vertical"); 
+        bool isWalking = Mathf.Abs(moveInput) > 0.1f; 
          if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
@@ -126,11 +126,10 @@ public class PlayerMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 1))
             {
                 if (hit.collider.tag == "ChairG")
-                {
+                {   
                     IsSitting = true;
                     sitChair();
-                    SitPosition();
-
+                    SitPosition();                    
                 }
              } 
     }
@@ -145,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         // Desactiva el CharacterController para mover al jugador directamente
         characterController.enabled = false;
 
-        // Mueve al jugador a la posición y rotación del GameObject SitPosition1
+        // Mueve al jugador a la posiciÃ³n y rotaciÃ³n del GameObject SitPosition1
         transform.position = SitPosition1.transform.position;
         transform.rotation = SitPosition1.transform.rotation;
     }
