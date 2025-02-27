@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ChairG
   - SitPosition
+  - SitPosition1
   layers:
   - Default
   - TransparentFX

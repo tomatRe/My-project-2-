@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Camera playerCamera;
     public Animator animator;
+    public GameObject SitPosition1;
     public float walkSpeed = 3f;
     public float runSpeed = 3f;
     public float jumpPower = 7f;
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        SitPosition1 = GameObject.Find("SitPosition1");
     }
 
     void Update()
@@ -121,13 +123,13 @@ public class PlayerMovement : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-
             if (Physics.Raycast(ray, out hit, 1))
             {
                 if (hit.collider.tag == "ChairG")
                 {
                     IsSitting = true;
                     sitChair();
+                    SitPosition();
 
                 }
              } 
@@ -138,7 +140,15 @@ public class PlayerMovement : MonoBehaviour
             canMove = true;
         }
     }
+    void SitPosition()
+    {
+        // Desactiva el CharacterController para mover al jugador directamente
+        characterController.enabled = false;
 
+        // Mueve al jugador a la posición y rotación del GameObject SitPosition1
+        transform.position = SitPosition1.transform.position;
+        transform.rotation = SitPosition1.transform.rotation;
+    }
     void sitChair()
     {
          animator.SetBool("IsSitting", true);
