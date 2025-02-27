@@ -18,9 +18,6 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
-    public float sitLookXLimit = 40f;
-    public float sitLookYLimit = 40f;
-    public float sitLookSpeed = 1f;
 
     public float defaultFOV = 60f;
     public float walkFOV = 61f;
@@ -117,23 +114,7 @@ public class PlayerMovement : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-
-        if (IsSitting)
-        {
-            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
-            transform.Rotate(0, mouseX, 0); 
-
-            Vector3 currentRotation = transform.eulerAngles;
-            if (currentRotation.y > 180) currentRotation.y -= 360; 
-            currentRotation.y = Mathf.Clamp(currentRotation.y, -sitLookYLimit, sitLookYLimit);
-            transform.eulerAngles = new Vector3(0, currentRotation.y, 0);
-        }
-        else
-        {
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-      }
-   
-}
+    }
     void canSeat()
     {
         if (Input.GetKey(KeyCode.E))

@@ -1106,6 +1106,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 245059512}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &257565866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 257565867}
+  m_Layer: 0
+  m_Name: sitPosition
+  m_TagString: SitPosition
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &257565867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257565866}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.144, y: 0.7212, z: -4.0408}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &262477842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2244530105233711947, guid: d753f23fefc4f0f4eaa35d24bd80e7e2,
@@ -6196,6 +6227,9 @@ MonoBehaviour:
   defaultHeight: 2
   crouchHeight: 1
   crouchSpeed: 3
+  sitLookXLimit: 40
+  sitLookYLimit: 40
+  sitLookSpeed: 1
   defaultFOV: 60
   walkFOV: 63
   runFOV: 66
@@ -9376,3 +9410,4 @@ SceneRoots:
   - {fileID: 2060951514}
   - {fileID: 47471398}
   - {fileID: 641304513}
+  - {fileID: 257565867}
