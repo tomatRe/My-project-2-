@@ -117,12 +117,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.E))
         {
-            Vector3 fwd = playerCamera.transform.TransformDirection(Vector3.forward);
-            
-             if (Physics.Raycast(playerCamera.transform.position, fwd, 1))
-             {           
-                 IsSitting = true;
-                 sitChair();
+            RaycastHit hit;
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, 1))
+            {
+                if (hit.collider.tag == "ChairG")
+                {
+                    IsSitting = true;
+                    sitChair();
+                }
              } 
     }
         if (Input.GetKey(KeyCode.Q))
