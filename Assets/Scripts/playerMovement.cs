@@ -60,8 +60,8 @@ public class PlayerMovement : MonoBehaviour
     {
         joystickX = Input.GetAxis("Horizontal");
         joystickY = Input.GetAxis("Vertical");
-        mouse x = Input.GetAxis("Mouse X");
-        mouse y = Input.GetAxis("Mouse Y");
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
     }
 
     void UpdateAnimations()
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
             characterController.Move(moveDirection * Time.deltaTime);
 
-            AdjustFOV(curSpeedX, curSpeedY, isRunning);        
+            AdjustFOV(curSpeedX, curSpeedY);        
         }
     }
 
@@ -153,13 +153,13 @@ public class PlayerMovement : MonoBehaviour
          canMove = false;
     }
    
-    void AdjustFOV(float speedX, float speedY, bool isRunning)
+    void AdjustFOV(float speedX, float speedY)
     {
         float targetFOV = defaultFOV; 
 
         if (Math.Abs(speedX) > 0 || Math.Abs(speedY) > 0)
         {
-            targetFOV = isRunning ? runFOV : walkFOV;
+            targetFOV = walkFOV;
         }
 
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, fovLerpSpeed * Time.deltaTime);
