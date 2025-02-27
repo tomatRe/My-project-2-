@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - ChairG
-  - SitPosition
   - SitPosition1
+  - StandPosition
   layers:
   - Default
   - TransparentFX

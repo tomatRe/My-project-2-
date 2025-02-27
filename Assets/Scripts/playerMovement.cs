@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -9,7 +10,8 @@ public class PlayerMovement : MonoBehaviour
     // public vars
     public Camera playerCamera;
     public Animator animator;
-    public GameObject SitPosition1;
+    public GameObject sitPosition1;
+    public GameObject standPosition;
     public float gravity = 10f;
     public float lookXLimit = 100f;
     public float lookYLimit = 0f;
@@ -30,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private float cameraRotationY = 0;
     private CharacterController characterController;
     private bool canMove = true;
-    private bool canLook = true;
     private bool IsSitting = false;
 
     // player inputs
@@ -46,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         characterController.height = defaultHeight;
         Cursor.visible = false;
-        SitPosition1 = GameObject.Find("SitPosition1");
+        sitPosition1 = GameObject.Find("SitPosition1");
+        standPosition = GameObject.Find("StandPosition");
     }
 
     void Update()
@@ -116,7 +118,6 @@ public class PlayerMovement : MonoBehaviour
             cameraRotationX += -mouseY * lookSpeed;
             cameraRotationX = Mathf.Clamp(cameraRotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(cameraRotationX, 0, 0);
-           // transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
             transform.rotation *= Quaternion.Euler(0, mouseX * lookSpeed, 0);
         }
         else
@@ -126,11 +127,10 @@ public class PlayerMovement : MonoBehaviour
             cameraRotationX = Mathf.Clamp(cameraRotationX, -lookXLimit, lookXLimit);
             cameraRotationY = Mathf.Clamp(cameraRotationY, -lookYLimit, lookYLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(-cameraRotationY, cameraRotationX, 0);
-            // transform.rotation = Quaternion.Euler(0, cameraRotationX, 0);
         }
     }
 
-    void canSeat()
+    async Task canSeat()
     {
         if (Input.GetKey(KeyCode.E))
         {
@@ -153,6 +153,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Q))
         {
             animator.SetBool("IsSitting", false);
+            await Task.Delay(1000);
+            StandPosition();
             IsSitting = false;
             canMove = true;
             lookXLimit = 100f;
@@ -165,8 +167,17 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = false;
 
         // Mueve al jugador a la posición y rotación del GameObject SitPosition1
-        transform.position = SitPosition1.transform.position;
-        transform.rotation = SitPosition1.transform.rotation;
+        transform.position = sitPosition1.transform.position;
+        transform.rotation = sitPosition1.transform.rotation;
+    }
+
+    void StandPosition()
+    {
+        // Activa el CharacterController para que el jugador pueda moverse
+        characterController.enabled = true;
+        // Mueve al jugador a la posición y rotación del GameObject SitToStand
+        transform.position = standPosition.transform.position;
+        transform.rotation = standPosition.transform.rotation;
     }
 
     void sitChair()
