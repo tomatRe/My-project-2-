@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
+    public float sitLookXLimit = 40f;
+    public float sitLookYLimit = 40f;
+    public float sitLookSpeed = 1f;
 
     public float defaultFOV = 60f;
     public float walkFOV = 61f;
@@ -30,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+    private bool canLook = true;
     private bool IsSitting = false;
 
     void Start()
@@ -49,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        
+        if (canMove) { 
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -85,23 +89,15 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             characterController.height = defaultHeight;
-            walkSpeed = 1.8f;
-            runSpeed = 1.8f;
+            walkSpeed = 0.9f;
+            runSpeed = 0.8f;
         }
         characterController.Move(moveDirection * Time.deltaTime);
 
-        if (canMove)
-        {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-        }
+
         AdjustFOV(curSpeedX, curSpeedY, isRunning);
 
-                // Update Animator parameter
         animator.SetBool("IsWalking", isWalking);
-        // Move the player if walking
         if (isWalking)
         {
             animator.SetBool("IsWalking", true);
@@ -110,9 +106,34 @@ public class PlayerMovement : MonoBehaviour
         else {
             animator.SetBool("IsWalking", false);
         }
-
+        
+    }
+        RotateCamera();
     }
 
+    void RotateCamera()
+    {
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+
+        if (IsSitting)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+            transform.Rotate(0, mouseX, 0); 
+
+            Vector3 currentRotation = transform.eulerAngles;
+            if (currentRotation.y > 180) currentRotation.y -= 360; 
+            currentRotation.y = Mathf.Clamp(currentRotation.y, -sitLookYLimit, sitLookYLimit);
+            transform.eulerAngles = new Vector3(0, currentRotation.y, 0);
+        }
+        else
+        {
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+      }
+   
+}
     void canSeat()
     {
         if (Input.GetKey(KeyCode.E))
@@ -126,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     IsSitting = true;
                     sitChair();
+
                 }
              } 
     }
@@ -135,13 +157,14 @@ public class PlayerMovement : MonoBehaviour
             canMove = true;
         }
     }
+
     void sitChair()
     {
          animator.SetBool("IsSitting", true);
          canMove = false;
     }
 
-
+   
     void AdjustFOV(float speedX, float speedY, bool isRunning)
     {
         float targetFOV = defaultFOV; 
