@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public GameObject sitPosition1;
     public GameObject standPosition;
+    public GameObject circle;
     public float gravity = 10f;
     public float lookXLimit = 100f;
     public float lookYLimit = 0f;
@@ -24,6 +25,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float runFOV = 66f;
     [SerializeField] public float fovLerpSpeed = 5f;
     [SerializeField] public float speed = 5f;
+
+    //aim training game
+
+    float x = 0;
+    float y = 0;
 
     // private vars
 
@@ -49,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
         sitPosition1 = GameObject.Find("SitPosition1");
         standPosition = GameObject.Find("StandPosition");
+        circle.SetActive(false);
     }
 
     void Update()
@@ -58,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimations();
         RotateCamera();
         canSeat();
+        StartText();
+        AimTrainingGame();
     }
 
     void GetInputs()
@@ -85,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        if (canMove) 
+        if (canMove)
         {
             // movimiento del jugador x y
             Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -95,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
             float curSpeedY = walkSpeed * joystickX;
 
             moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-            
+
             // efecto gravedad
 
             if (!characterController.isGrounded)
@@ -105,10 +114,10 @@ public class PlayerMovement : MonoBehaviour
 
             characterController.Move(moveDirection * Time.deltaTime);
 
-            AdjustFOV(curSpeedX, curSpeedY);        
+            AdjustFOV(curSpeedX, curSpeedY);
         }
     }
-    
+
     void RotateCamera()
     {
 
@@ -148,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
                     lookYLimit = 30f;
 
                 }
-            } 
+            }
         }
 
         if (Input.GetKey(KeyCode.Q))
@@ -161,14 +170,63 @@ public class PlayerMovement : MonoBehaviour
             lookXLimit = 100f;
         }
     }
-    
-   
+
+
+    void StartText()
+    {
+        if (IsSitting)
+       {
+      
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 5))
+            {
+                if (hit.collider.tag == "startButton")
+                {
+                    Destroy(GameObject.Find("startButton"));
+                    StartAim();
+
+                }
+            }
+        }
+       }
+    }
+    void StartAim()
+    {
+     circle.SetActive(true);
+    }
+
+    public void SystemRandom()
+    {
+        x = UnityEngine.Random.Range(-2.2724f, -1.8286f);
+        y = UnityEngine.Random.Range(1.02f, 1.2027f);
+    }
+
+    void AimTrainingGame() {
+
+        SystemRandom();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 5))
+            {
+                if (hit.collider.tag == "circle")
+                {
+                    circle.transform.position = new Vector3(x, y, -3.4994f);
+                }
+            }
+        }
+    }
     void SitPosition()
     {
         // Desactiva el CharacterController para mover al jugador directamente
         characterController.enabled = false;
 
-        // Mueve al jugador a la posici贸n y rotaci贸n del GameObject SitPosition1
+        // Mueve al jugador a la posici髇 y rotaci髇 del GameObject SitPosition1
         transform.position = sitPosition1.transform.position;
         transform.rotation = sitPosition1.transform.rotation;
     }
@@ -177,14 +235,14 @@ public class PlayerMovement : MonoBehaviour
     {
         // Activa el CharacterController para que el jugador pueda moverse
         characterController.enabled = true;
-        // Mueve al jugador a la posici贸n y rotaci贸n del GameObject SitToStand
+        // Mueve al jugador a la posici髇 y rotaci髇 del GameObject SitToStand
         transform.position = standPosition.transform.position;
         transform.rotation = standPosition.transform.rotation;
     }
 
     void AdjustFOV(float speedX, float speedY)
     {
-        float targetFOV = defaultFOV; 
+        float targetFOV = defaultFOV;
 
         if (Math.Abs(speedX) > 0 || Math.Abs(speedY) > 0)
         {

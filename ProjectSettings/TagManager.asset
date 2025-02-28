@@ -9,6 +9,7 @@ TagManager:
   - StandPosition
   - CinemachineTarget
   - startButton
+  - circle
   layers:
   - Default
   - TransparentFX
