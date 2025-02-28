@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    async Task canSeat()
+    public async Task canSeat()
     {
         if (Input.GetKey(KeyCode.E))
         {
@@ -139,9 +139,10 @@ public class PlayerMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 1))
             {
                 if (hit.collider.tag == "ChairG")
-                {   
+                {
+                    animator.SetBool("IsSitting", true);
+                    canMove = false;
                     IsSitting = true;
-                    sitChair();
                     SitPosition();
                     lookXLimit = 30f;
                     lookYLimit = 30f;
@@ -160,7 +161,8 @@ public class PlayerMovement : MonoBehaviour
             lookXLimit = 100f;
         }
     }
-
+    
+   
     void SitPosition()
     {
         // Desactiva el CharacterController para mover al jugador directamente
@@ -180,12 +182,6 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = standPosition.transform.rotation;
     }
 
-    void sitChair()
-    {
-         animator.SetBool("IsSitting", true);
-         canMove = false;
-    }
-   
     void AdjustFOV(float speedX, float speedY)
     {
         float targetFOV = defaultFOV; 

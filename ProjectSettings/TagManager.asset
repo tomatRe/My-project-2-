@@ -7,6 +7,8 @@ TagManager:
   - ChairG
   - SitPosition1
   - StandPosition
+  - CinemachineTarget
+  - startButton
   layers:
   - Default
   - TransparentFX
