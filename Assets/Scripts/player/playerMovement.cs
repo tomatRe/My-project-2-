@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject sitPosition1;
     public GameObject standPosition;
     public GameObject circle;
+    public bool isSitting = false;
     public float gravity = 10f;
     public float lookXLimit = 100f;
     public float lookYLimit = 0f;
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     float x = 0;
     float y = 0;
-
+   public float playerScore = 0;
     // private vars
 
     private Vector3 moveDirection = Vector3.zero;
@@ -38,8 +39,6 @@ public class PlayerMovement : MonoBehaviour
     private float cameraRotationY = 0;
     private CharacterController characterController;
     private bool canMove = true;
-    private bool IsSitting = false;
-
     // player inputs
     private float mouseX = 0;
     private float mouseY = 0;
@@ -121,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     void RotateCamera()
     {
 
-        if (!IsSitting)
+        if (!isSitting)
         {
             cameraRotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             cameraRotationX += -mouseY * lookSpeed;
@@ -149,9 +148,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (hit.collider.tag == "ChairG")
                 {
-                    animator.SetBool("IsSitting", true);
+                    animator.SetBool("SittingAnimation", true);
                     canMove = false;
-                    IsSitting = true;
+                    isSitting = true;
                     SitPosition();
                     lookXLimit = 30f;
                     lookYLimit = 30f;
@@ -162,19 +161,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            animator.SetBool("IsSitting", false);
+            animator.SetBool("SittingAnimation", false);
             await Task.Delay(1000);
             StandPosition();
-            IsSitting = false;
+            isSitting = false;
             canMove = true;
             lookXLimit = 100f;
         }
     }
 
 
-    void StartText()
+void StartText()
     {
-        if (IsSitting)
+        if (isSitting)
        {
       
         if (Input.GetMouseButtonDown(0))
@@ -205,9 +204,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void AimTrainingGame() {
+        playerScore = 0;
 
         SystemRandom();
-        if (IsSitting)
+        if (isSitting)
         {
 
        
@@ -220,7 +220,8 @@ public class PlayerMovement : MonoBehaviour
                 if (hit.collider.tag == "circle")
                 {
                     circle.transform.position = new Vector3(x, y, -3.4994f);
-                }
+                    playerScore++;
+                    }
             }
         }
         }
