@@ -207,7 +207,10 @@ public class PlayerMovement : MonoBehaviour
     void AimTrainingGame() {
 
         SystemRandom();
+        if (IsSitting)
+        {
 
+       
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -219,6 +222,7 @@ public class PlayerMovement : MonoBehaviour
                     circle.transform.position = new Vector3(x, y, -3.4994f);
                 }
             }
+        }
         }
     }
     void SitPosition()
